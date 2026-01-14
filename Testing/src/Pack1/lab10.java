@@ -2,7 +2,7 @@ package Pack1;
 
 public class lab10 {
 	public static boolean StringIsPositive(String str) {
-		
+		  String sb = str.toUpperCase();
 		  if(str.length() == 0) return true;
 		   
 		  
@@ -12,7 +12,7 @@ public class lab10 {
 		 return true;
 	  }
 	  public static void main(String args[]) {
-		  String str = "aBc";
+		  String str = "mayank";
 		  
 		  System.out.println(StringIsPositive(str));
 
