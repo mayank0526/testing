@@ -1,9 +1,9 @@
 package Pack1;
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.*;
 
-public class lab11 {
+import java.time.LocalDate;
+import java.util.Scanner;
+
+public class lab13 {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -16,12 +16,16 @@ public class lab11 {
 		int day = sc.nextInt();
 		
 		
-		
 		LocalDate gd = LocalDate.of(year, month, day);
-		LocalDate cd = LocalDate.now();
 		
-		Period period =  Period.between(gd,cd);
-		System.out.println("Its been " + period);
+		System.out.println("Enter years of Warranty");
+
+		
+		int wyrs = sc.nextInt();
+		LocalDate result = gd.plusYears(wyrs);
+		
+		System.out.println("Warrent is expyring on: " + result);
+		
 		
 
 	}
