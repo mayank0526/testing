@@ -1,15 +1,17 @@
 package Pack1;
+ 
 import java.util.*;
-
-class person{
+ 
+class pers{
 	String name;
 	float age;
-	
-	person(float age){
+	pers(){
+	}
+	pers(float age){
 		
 		this.age=age;
 	}
-	person(String name){
+	pers(String name){
 		this.name=name;
 	}
 	
@@ -27,71 +29,50 @@ class person{
 	}
 		
 }
- class account extends person {
+ 
+ 
+class account extends pers {
 	
 	
 	long accnumber;
 	double balance;
+ 
 	
-	double minimun = 500;
-	 
-
-	
-
-
 	public account( String name, long accnumber, double balance) {
 		super(name);
 		this.accnumber = accnumber;
 		this.balance = balance;
 	}
-
-
+ 
+ 
 	public long getAccnumber() {
 		return accnumber;
 	}
-
-
+ 
+ 
 	public void setAccnumber(long accnumber) {
 		this.accnumber = accnumber;
 	}
-
-
-	public double getBalance() {
-		return balance;
-	}
-
-
+ 
+ 
+//	public double getBalance() {
+//		return balance;
+//	}
+ 
+ 
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-
-
-//	public person getAccholder() {
-//		return accholder;
-//	}
-//
-//
-//	public void setAccholder(person accholder) {
-//		this.accholder = accholder;
-//	}
-
-
-	public double getMinimun() {
-		return minimun;
-	}
-
-
-	public void setMinimun(double minimun) {
-		this.minimun = minimun;
-	}
-
-
+ 
+ 
 	public void depoist(int deposit_amount) {
 		balance = balance+deposit_amount;
 					
 	}
+	
+	
 	public void withdraw(int withdraw_amount) {
-		if (balance>=500 & balance>withdraw_amount ) {
+		if (balance >= 500 && balance > withdraw_amount ) {
 		balance=balance-withdraw_amount;
 	}
 		else {
@@ -99,82 +80,112 @@ class person{
 		}
 	}
 	
-
+ 
 	public void getbalance() {
-		System.out.println("Current balance is " + balance);
+		System.out.print("Current balance is ");
+		System.out.println(balance);
 	}
-	
-	
 	
 }
-
- class savings extends account{
-	 public savings(String name, long accnumber, double balance) {
-		super(name, accnumber, balance);
-		this.name=name;
-		this.accnumber=accnumber;
-		this.balance=balance;
-		// TODO Auto-generated constructor stub
+ 
+class saving extends account{
+	public saving(String name, long accnumber, double balance) {
+		super(name,accnumber,balance);
 	}
-
-	 final double minimum = 500;
-	 @Override
-	 public void withdraw(int withdraw_amount) {
-		if(balance>=minimum & balance>withdraw_amount) {
-			balance=balance-withdraw_amount;
-		}
+ 
+	final double min=500;
+	@Override
+	public void withdraw(int withdraw_amount) {
+		if (balance>=min & balance>withdraw_amount ) {
+		balance=balance-withdraw_amount;
+	}
 		else {
-			System.out.println("Aukaaaaat");
+			System.out.println("Insuficient balance");
 		}
-	 }
- }
-
-public class lab2_1 {
-	
-	
-	public static void main(String[] args) {
-	Scanner sc = new Scanner(System.in);
-	System.out.println("1-Deposit 2-Withdraw 3-Getbalance");
-    int function = sc.nextInt();
-    
-    account a1= new account ("Smith",000000111,2000);
-    
-
-		 switch(function) {
-			 case 1:{
-				 System.out.println("enter amount to deposit");
-				 int depositamount= sc.nextInt();
-				 	a1.depoist(depositamount);
-			System.out.println("updated balance is " + a1.getBalance());
-			
-			 }
-			 break;
-			 case 2:{
-				 System.out.println("enter amount to withdraw");
-				 int withdrawamount= sc.nextInt();
-					a1.withdraw(withdrawamount);
-					System.out.println("updated balance is " + a1.getBalance());
-					
-					 }
-			 break; 
-			 
-			 case 3:{
-				 a1.getbalance();
-			 }
-			 
-		 }
-		
-		
-		
-		
-
-		
 	}
-
-	
-	
-
 	
 }
-
-
+ 
+class current extends account{
+ 
+	private double overdraftLimit;
+	
+    public current(String name ,int accnumber, double balance, double overdraftLimit) {
+        super(name,accnumber, balance);
+        this.overdraftLimit = overdraftLimit;
+    }
+ 
+    @Override
+    public void withdraw(int amount) {
+        if (amount <= balance + overdraftLimit) {
+            balance -= amount;
+            System.out.println("Current Account withdrawal successful.");
+            System.out.println("Remaining balance: " + balance);
+        } else {
+            System.out.println("Overdraft limit exceeded. Withdrawal denied.");
+        }
+    }
+ 
+    public boolean withdrawWithStatus(double amount) {
+        if (amount <= balance + overdraftLimit) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+}
+ 
+class detail  {
+	Scanner sc = new Scanner(System.in);
+	account a1;
+	saving s1;
+	current c1;
+	 detail(String name, long accnumber, double balance){
+		 a1=new account(name,accnumber,balance);
+	}
+	void menu() {
+		
+	int functionality;
+	do {
+		System.out.println();
+		System.out.println("chose 1 for depoist");
+		System.out.println("chose 2 for withdraw");
+		System.out.println("chose 3 for get balance");
+		System.out.println("chose 4 or any else for exit");
+		
+	functionality = sc.nextInt();
+	switch(functionality) {
+	case 1:
+	System.out.println("enter amount to be depoist");
+	int amount = sc.nextInt();
+	a1.depoist(amount);
+	a1.getbalance();
+	break;
+	case 2:
+	System.out.println("enter amount to be withdraw");
+	amount = sc.nextInt();
+	a1.withdraw(amount);
+	a1.getbalance();
+	break;
+	case 3:
+	a1.getbalance();
+	break;
+	default:
+		System.out.println("Exit..");
+	}
+	}while(functionality ==1 || functionality ==2 || functionality ==3);
+	
+	}
+	
+ 
+}
+ 
+public class lab2_1 {
+	public static void main(String[] args) {
+		
+		detail d = new detail("Smith",00000001,2000);
+		d.menu();
+		
+		
+	}
+}
