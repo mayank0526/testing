@@ -1,5 +1,5 @@
 package Pack1;
-
+import java.util.*;
 public class lab2_2 {
 
 	public static void main(String[] args) {
@@ -41,24 +41,24 @@ public class lab2_2 {
 			
 		}
 		 
-		class Savingac extends account {
-			final int min_balance =500;
-			@Override
-			public void withdraw(double amount) {
-				if (balance - amount >= min_balance) {
-					System.out.println("withdraw can be done ");
-					balance -= amount;
-				}
-				else {
-					System.out.println("not possible account balance must be mainatained ");
-					
-				}
-				
-			}
-			
-		}
-		 
-		class current extends
+//		class Savingac extends account {
+//			final int min_balance =500;
+//			@Override
+//			public void withdraw(double amount) {
+//				if (balance - amount >= min_balance) {
+//					System.out.println("withdraw can be done ");
+//					balance -= amount;
+//				}
+//				else {
+//					System.out.println("not possible account balance must be mainatained ");
+//					
+//				}
+//				
+//			}
+//			
+//		}
+//		 
+		//class current extends
 		 
 		 
 		
