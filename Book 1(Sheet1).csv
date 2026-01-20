@@ -1,0 +1,9 @@
+﻿,id,name,linktext,tag and id,tag and class,tag and attribute,"tag,class and attribute",inner text
+Firstname,input-firstname,firstname,N/A,input#input-firstname,input.form-control,input[name='firstname'],input.form-control[name='firstname'],NA
+Lastname,input-lastname,lastname,N/A,input#input-lastname,input.form-control,input[name='lastname'],input.form-control[name='lastname'],NA
+email,input-email,email,N/A,input#input-email,input.form-control,input[name='email'],input.form-control[name='femail'],NA
+telephone,input-telephone,telephone,N/A,input#input-telephone,input.form-control,input[name='telephone'],input.form-control[name='telephone'],NA
+confirm password,input-confirm,confirm,N/A,input#input-confirm,input.form-control,input[name='confirm'],input.form-control[name='Password confirm'],NA
+Subscribe,N/A,newsletter,N/A,label,input.control-label,N/A,input.control-lable[N/A],N/A
+PrivacyPolicy,N/A,agree,https://tutorialsninja.com/demo/index.php?route=information/information/agree&information_id=3,ahref,ahref.agree,ahref[N/A],ahref.agree[N/A],N/A
+Continue,N/A,N/A,N/A,input#N/A,input-primary,input[N/A],input.primary[N/A],N/A
