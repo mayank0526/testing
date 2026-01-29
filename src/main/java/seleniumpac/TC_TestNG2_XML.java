@@ -1,9 +1,11 @@
 package seleniumpac;
-import org.testng.annotations.Test;
 
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import org.testng.annotations.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
  
 import io.github.bonigarcia.wdm.WebDriverManager;
  
@@ -17,18 +19,17 @@ import static org.testng.Assert.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Date;
 import java.util.Properties;
  
-import org.apache.commons.io.FileUtils;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+ 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
@@ -38,13 +39,13 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.AfterSuite;
  
-public class TC_TestNG {
+public class TC_TestNG2_XML {
 	
 	WebDriver driver;
 	
 	String projectpath=System.getProperty("user.dir");
   @Test(dataProvider = "dp")
-  public void f(String url,String username, String password) throws IOException {
+  public void f(String url,String username, String password) {
 	  
 	  System.out.println("This is test");
 	  login_pom obj=new login_pom(driver);
@@ -56,38 +57,24 @@ public class TC_TestNG {
 			driver.findElement(By.xpath("//button[@type='submit']")).click();
 			boolean dashborad=driver.findElement(By.xpath("//h6[text()='Dashboard']")).isDisplayed();
 			*/
-	  		ExtentReports extent=new ExtentReports();
-	  		ExtentSparkReporter spark=new ExtentSparkReporter(projectpath+"\\jan28th_Report.html");
-	  		extent.attachReporter(spark);
-	  		ExtentTest test=extent.createTest("Verify the login");
-	  		
 	  		obj.enterusername(username);
 	  		obj.enterpassword(password);
 	  		obj.clickonsubmit();
 	  		boolean dashboard=obj.dashboardisplayed();
 	  		
 	  		
-			if(dashboard==false)
+			if(dashboard==true)
 			{
 				System.out.println("login successful");
-				//Assert.assertEquals(dashboard, true);
-				test.pass("login successful");
+				Assert.assertEquals(dashboard, true);
 			}
 			else
 			
 			{
 				System.out.println("login unsuccessful");
-				//Assert.assertEquals(dashboard, false);
-				File src=((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-				String timestamp=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-				
-				String dest="./Screenshots/"+"Screenshot"+"_"+timestamp+".png";
-				File destfile=new File(dest);
-				FileUtils.copyFile(src, destfile);
-				test.fail("login unsuccessful").addScreenCaptureFromPath(dest);
-				
+				Assert.assertEquals(dashboard, false);
 			}
-			extent.flush();
+			
 	
   }
   @BeforeMethod
@@ -107,11 +94,24 @@ public class TC_TestNG {
  
  
   @DataProvider
-  public Object[][] dp() throws InvalidFormatException, IOException {
+public Object[][] dp() throws InvalidFormatException, IOException, ParserConfigurationException, SAXException {
 	  
 	  String[][] data1=new String[1][3];
+	  File xmlfile=new File(projectpath+"\\input.properties");
+	  DocumentBuilderFactory dbfactory=DocumentBuilderFactory.newInstance();
+	  DocumentBuilder dbuilder=dbfactory.newDocumentBuilder();
+	  Document doc=dbuilder.parse(xmlfile);
+	  NodeList nl=doc.getChildNodes();
+	  Node n=nl.item(0);
+	  Element ele=(Element)n;
 	  
-	  Properties prob=new Properties();
+	  String ohrm_url=ele.getElementsByTagName("url").item(0).getTextContent();
+	  String ohrm_username=ele.getElementsByTagName("username").item(0).getTextContent();
+	  String ohrm_password=ele.getElementsByTagName("password").item(0).getTextContent();
+	  data1[0][0]=ohrm_url;
+	  data1[0][1]=ohrm_username;
+	  data1[0][2]=ohrm_password;
+	 /* Properties prob=new Properties();
 	  File f2=new File(projectpath+"\\input.properties");
 	  FileInputStream fs=new FileInputStream(f2);
 	  prob.load(fs);
@@ -131,6 +131,29 @@ public class TC_TestNG {
 	  */
     return data1;
   }
+
+	  
+	  
+	 /* Properties prob=new Properties();
+	  File f2=new File(projectpath+"\\input.properties");
+	  FileInputStream fs=new FileInputStream(f2);
+	  prob.load(fs);
+	   data1[0][0]=prob.getProperty("url");
+	  data1[0][1]=prob.getProperty("uname");
+	  data1[0][2]=prob.getProperty("pword");
+	 /* File f1=new File(projectpath+"\\data.xlsx");
+	  XSSFWorkbook workbook=new XSSFWorkbook(f1);
+	  XSSFSheet s1=workbook.getSheetAt(0);
+	  int rowcount=s1.getPhysicalNumberOfRows();
+	  System.out.println("row count:"+rowcount);
+	  for(int i=0;i<rowcount;i++)
+	  {
+		  data1[i][0]=s1.getRow(i).getCell(0).getStringCellValue();
+		  data1[i][1]=s1.getRow(i).getCell(1).getStringCellValue();
+	  }
+	  */
+   
+  
   @BeforeClass
   public void beforeClass() {
 	  System.out.println("This is Before Class");
@@ -160,5 +183,4 @@ public class TC_TestNG {
   public void afterSuite() {
 	  System.out.println("This is after suite");
   }
- 
 }
